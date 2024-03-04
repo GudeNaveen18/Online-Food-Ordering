@@ -1,0 +1,19 @@
+db.products.aggregate([
+    {
+        $match:{price:{$gt:1200}}
+    },
+    {$unwind:"$colors"},
+    {
+        $group:{
+            _id:{priceGroup:"$price"},
+            colors:{$addToSet:"$colors"}
+        }
+    },
+   {
+        $project:{
+            colors:1,
+            _id:1,
+            colorLength:{$size:"$colors"}
+        }
+   } 
+])
